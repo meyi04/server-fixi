@@ -3,7 +3,7 @@ import crypto from 'crypto';
 
 if (!admin.apps.length) {
   const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT;
-  let credential = admin.credential.applicationDefault();
+  let credential;
   if (serviceAccountJson) {
     let serviceAccount;
     try {
@@ -15,6 +15,8 @@ if (!admin.apps.length) {
       throw new Error('FIREBASE_SERVICE_ACCOUNT project_id must match FIREBASE_PROJECT_ID');
     }
     credential = admin.credential.cert(serviceAccount);
+  } else {
+    credential = admin.credential.applicationDefault();
   }
   const options = { credential };
   if (process.env.FIREBASE_PROJECT_ID) options.projectId = process.env.FIREBASE_PROJECT_ID;
