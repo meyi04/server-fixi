@@ -9,11 +9,11 @@ import core from './routes/core.js';
 import admin from './routes/admin.js';
 import { MAX_UPLOAD_BYTES, streamUpload } from './db.js';
 
-export function createApp(corsOrigins = process.env.CORS_ORIGINS || '') {
+export function createApp() {
   const app = express();
   app.set('trust proxy', 1);
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
-  app.use(cors({ origin: corsOrigins.split(',').filter(Boolean), credentials: false }));
+  app.use(cors());
   app.use(express.json({ limit: '100kb' }));
   app.use('/api', rateLimit({ windowMs: 60e3, limit: 300, standardHeaders: true, legacyHeaders: false }));
   app.use('/api/auth', rateLimit({ windowMs: 15 * 60e3, limit: 40, standardHeaders: true, legacyHeaders: false }));
